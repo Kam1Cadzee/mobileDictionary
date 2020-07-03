@@ -1,11 +1,12 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import MainScreen from './MainScreen';
-import SignInScreen from './SignInScreen';
-import SignUpScreen from './SignUpScreen';
+import MainScreen from '../screens/AuthNavigation/Main.screen';
+import SignInScreen from '../screens/AuthNavigation/SignIn.screen';
+import SignUpScreen from '../screens/AuthNavigation/SignUp.screen';
 import {useTheme} from 'react-native-paper';
+import {AuthNavigationParamList} from '../typings/INavigationProps';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<AuthNavigationParamList>();
 
 const AuthNavigator = () => {
   const {colors} = useTheme();

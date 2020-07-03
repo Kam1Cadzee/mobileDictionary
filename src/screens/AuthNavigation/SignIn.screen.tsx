@@ -15,7 +15,7 @@ import {
   Title,
   useTheme,
 } from 'react-native-paper';
-import {SignInScreenProps} from './authTypings';
+import {SignInScreenProps} from '../../typings/authTypings';
 import {useForm, Controller} from 'react-hook-form';
 import {useMutation} from '@apollo/react-hooks';
 import QUERIES from '../../graphql/queries';
@@ -28,7 +28,12 @@ interface IFormData {
 const SignInScreen = (props: SignInScreenProps) => {
   const theme = useTheme();
   const {colors} = theme;
-  const {control, handleSubmit} = useForm<IFormData>();
+  const {control, handleSubmit} = useForm<IFormData>({
+    defaultValues: {
+      email: 'test@gmail.com',
+      password: '12345',
+    },
+  });
   const [login] = useMutation(QUERIES.LOGIN, {
     update: async (proxy, mutationResult) => {
       proxy.writeData({

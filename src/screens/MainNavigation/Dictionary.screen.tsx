@@ -1,8 +1,8 @@
 import React from 'react';
 import {Text} from 'react-native';
 
-const WordsScreen = () => {
+const DictionaryScreen = () => {
   return <Text>WordsScreen</Text>;
 };
 
-export default WordsScreen;
+export default DictionaryScreen;

@@ -18,22 +18,6 @@
 		2DCD954D1E0B4F2C00145EB5 /* MobileDictionaryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MobileDictionaryTests.m */; };
 		48B61069C1D6AC99320BB6CB /* libPods-MobileDictionary-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D956CA3188E973B28F159C04 /* libPods-MobileDictionary-tvOSTests.a */; };
 		9C15A3F7A479AC8561CB7C47 /* libPods-MobileDictionary-MobileDictionaryTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C3D74F2F4DEEA58EA42CB2 /* libPods-MobileDictionary-MobileDictionaryTests.a */; };
-		A2BF93E2249FD2700074B40C /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D2249FD26F0074B40C /* Ionicons.ttf */; };
-		A2BF93E3249FD2700074B40C /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D3249FD26F0074B40C /* Entypo.ttf */; };
-		A2BF93E4249FD2700074B40C /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D4249FD26F0074B40C /* FontAwesome5_Brands.ttf */; };
-		A2BF93E5249FD2700074B40C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D5249FD26F0074B40C /* Feather.ttf */; };
-		A2BF93E6249FD2700074B40C /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D6249FD26F0074B40C /* Octicons.ttf */; };
-		A2BF93E7249FD2700074B40C /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D7249FD26F0074B40C /* Foundation.ttf */; };
-		A2BF93E8249FD2700074B40C /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D8249FD26F0074B40C /* AntDesign.ttf */; };
-		A2BF93E9249FD2700074B40C /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93D9249FD26F0074B40C /* Fontisto.ttf */; };
-		A2BF93EA249FD2700074B40C /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DA249FD26F0074B40C /* FontAwesome.ttf */; };
-		A2BF93EB249FD2700074B40C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DB249FD26F0074B40C /* MaterialIcons.ttf */; };
-		A2BF93EC249FD2700074B40C /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DC249FD26F0074B40C /* SimpleLineIcons.ttf */; };
-		A2BF93ED249FD2700074B40C /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DD249FD26F0074B40C /* MaterialCommunityIcons.ttf */; };
-		A2BF93EE249FD2700074B40C /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DE249FD26F0074B40C /* FontAwesome5_Regular.ttf */; };
-		A2BF93EF249FD2700074B40C /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93DF249FD2700074B40C /* Zocial.ttf */; };
-		A2BF93F0249FD2700074B40C /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93E0249FD2700074B40C /* EvilIcons.ttf */; };
-		A2BF93F1249FD2700074B40C /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A2BF93E1249FD2700074B40C /* FontAwesome5_Solid.ttf */; };
 		ED8534A64B0716923403F77C /* libPods-MobileDictionary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1185C1B4C6742B11D78AE24 /* libPods-MobileDictionary.a */; };
 		F04412C14C0F28BF8AC6D7AA /* libPods-MobileDictionary-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4925122D42346CB30C89B7 /* libPods-MobileDictionary-tvOS.a */; };
 /* End PBXBuildFile section */
@@ -264,6 +248,7 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+				8E60A2847D04F969D121A052 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -285,6 +270,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				F190A6134D58390050D53060 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -347,6 +333,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = Q2AGQ3VW9H;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -394,23 +381,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				A2BF93EA249FD2700074B40C /* FontAwesome.ttf in Resources */,
-				A2BF93EC249FD2700074B40C /* SimpleLineIcons.ttf in Resources */,
-				A2BF93E7249FD2700074B40C /* Foundation.ttf in Resources */,
-				A2BF93E9249FD2700074B40C /* Fontisto.ttf in Resources */,
-				A2BF93E3249FD2700074B40C /* Entypo.ttf in Resources */,
-				A2BF93E5249FD2700074B40C /* Feather.ttf in Resources */,
-				A2BF93E6249FD2700074B40C /* Octicons.ttf in Resources */,
-				A2BF93EF249FD2700074B40C /* Zocial.ttf in Resources */,
-				A2BF93ED249FD2700074B40C /* MaterialCommunityIcons.ttf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				A2BF93F0249FD2700074B40C /* EvilIcons.ttf in Resources */,
-				A2BF93EB249FD2700074B40C /* MaterialIcons.ttf in Resources */,
-				A2BF93E8249FD2700074B40C /* AntDesign.ttf in Resources */,
-				A2BF93EE249FD2700074B40C /* FontAwesome5_Regular.ttf in Resources */,
-				A2BF93F1249FD2700074B40C /* FontAwesome5_Solid.ttf in Resources */,
-				A2BF93E2249FD2700074B40C /* Ionicons.ttf in Resources */,
-				A2BF93E4249FD2700074B40C /* FontAwesome5_Brands.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +475,54 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8E60A2847D04F969D121A052 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileDictionary-MobileDictionaryTests/Pods-MobileDictionary-MobileDictionaryTests-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MobileDictionary-MobileDictionaryTests/Pods-MobileDictionary-MobileDictionaryTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		A3288A53E5843419E8E18127 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -546,6 +565,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F190A6134D58390050D53060 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MobileDictionary/Pods-MobileDictionary-resources.sh",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MobileDictionary/Pods-MobileDictionary-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -701,6 +768,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q2AGQ3VW9H;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -728,6 +796,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q2AGQ3VW9H;
 				INFOPLIST_FILE = MobileDictionary/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (

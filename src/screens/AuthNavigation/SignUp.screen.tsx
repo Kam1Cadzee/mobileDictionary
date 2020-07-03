@@ -15,7 +15,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import MainSvg from '../../components/Svg/MainSvg';
-import {SignUpScreenProps} from './authTypings';
+import {SignUpScreenProps} from '../../typings/authTypings';
 
 const SignUpScreen = (props: SignUpScreenProps) => {
   const theme = useTheme();

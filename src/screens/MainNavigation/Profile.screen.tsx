@@ -3,18 +3,12 @@ import {Menu} from 'react-native-paper';
 import {View} from 'react-native';
 import {useApolloClient} from '@apollo/react-hooks';
 import AsyncStorage from '@react-native-community/async-storage';
-import {ProfileScreenProps} from './mainTypings';
+import {ProfileScreenProps} from '../../typings/mainTypings';
 
 const ProfileScreen = (props: ProfileScreenProps) => {
   const client = useApolloClient();
   const handleExit = async () => {
-    await client.cache.writeData({
-      data: {
-        isAuth: false,
-        currentUser: null,
-        step: 0,
-      },
-    });
+    await client.resetStore();
     AsyncStorage.removeItem('token');
   };
 

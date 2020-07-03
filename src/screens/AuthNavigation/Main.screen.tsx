@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {useTheme, Button, Paragraph, Title} from 'react-native-paper';
-import {MainScreenProps} from './authTypings';
+import {MainScreenProps} from '../../typings/authTypings';
 import Award from '../../assets/images/book.svg';
 
 const MainScreen = (props: MainScreenProps) => {
