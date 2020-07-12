@@ -1,18 +1,18 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {SentencesModalProps} from '../../../../typings/INavigationProps';
 
-const PhrasesScreen = () => {
+const SentencesModal = ({}: SentencesModalProps) => {
   return (
     <View style={styles.con}>
-      <Text>PhrasesView</Text>
+      <Text>SentencesView</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   con: {
-    backgroundColor: 'red',
     flex: 1,
   },
 });
-export default PhrasesScreen;
+export default SentencesModal;

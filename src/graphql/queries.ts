@@ -75,8 +75,8 @@ const QUERIES = {
     }
   `,
   GET_ENTITIES: gql`
-      query getEntities($id: Int) {
-          entities(where: {userId: {equals: $id}, isCreate: {equals: true}}, orderBy: {updatedAt: desc}) {
+      query getEntities($id: Int, $skip: Int, $first: Int) {
+          entities(skip: $skip, first: $first, where: {userId: {equals: $id}, isCreate: {equals: true}}, orderBy: {updatedAt: desc}) {
               ${FRAGMENTS.entity}
           }
       }
@@ -84,6 +84,15 @@ const QUERIES = {
   getEntity: gql`
     query getEntity($id: Int!) {
       getEntity(id: $id) @client
+    }
+  `,
+  words: gql`
+    query words($skip: Int, $first: Int) {
+      translates(skip: $skip, first: $first, orderBy: {updatedAt: desc}) {
+        ru
+        updatedAt
+        id
+      }
     }
   `,
   GET_ENTITIES_BY_WORD_CLIENT: gql`

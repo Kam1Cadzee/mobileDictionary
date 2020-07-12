@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {SentencesScreenProps} from '../../../../typings/INavigationProps';
 
-const SentencesScreen = () => {
+const SentencesScreen = ({}: SentencesScreenProps) => {
   return (
     <View style={styles.con}>
       <Text>SentencesView</Text>
@@ -11,7 +12,6 @@ const SentencesScreen = () => {
 
 const styles = StyleSheet.create({
   con: {
-    backgroundColor: 'blue',
     flex: 1,
   },
 });

@@ -19,25 +19,33 @@ const FRAGMENTS = {
     },
     isNeededEdit,
     isCreate,
-    words {
+    words(orderBy: {
+      updatedAt:desc
+    }) {
       id,
       en,
       type,
       disconnectTranslate {
         id
       }
-      translate {
+      translate(orderBy: {
+      updatedAt: desc
+    }) {
         ru,
         id,
         type
       },
     },
-    phrases {
+    phrases(orderBy: {
+      updatedAt: desc
+    }) {
       id,
       phrase,
       ru
     },
-    sentences {
+    sentences(orderBy: {
+      updatedAt: desc
+    }) {
       id, 
       sentence,
       ru

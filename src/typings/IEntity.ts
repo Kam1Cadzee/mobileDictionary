@@ -10,6 +10,7 @@ export interface ITranslate {
   id: number;
   ru: string;
   type: PartOfSpeech;
+  updatedAt: string;
 }
 export interface IWord {
   id: number;

@@ -9,7 +9,11 @@ const Tab = createDrawerNavigator<MainNavigationParamList>();
 
 const MainNavigator = () => {
   return (
-    <Tab.Navigator initialRouteName={'Create'}>
+    <Tab.Navigator
+      minSwipeDistance={20}
+      edgeWidth={100}
+      drawerType={'back'}
+      initialRouteName={'Profile'}>
       <Tab.Screen name="Create" component={CreateNavigation} />
       <Tab.Screen name="Dictionary" component={DictionaryScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

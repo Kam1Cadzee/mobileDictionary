@@ -9,7 +9,7 @@ import SplashScreen from './src/screens/Splash.screen';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
-
+console.disableYellowBox = true;
 const App = () => {
   const {user} = useCurrentUser();
   const [refresh, {loading}] = useMutation(QUERIES.REFRESH_USER, {
@@ -31,15 +31,13 @@ const App = () => {
     return <SplashScreen />;
   }
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Stack.Navigator headerMode={'none'}>
-        {user ? (
-          <Stack.Screen name="MainNavigator" component={MainNavigator} />
-        ) : (
-          <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
-        )}
-      </Stack.Navigator>
-    </SafeAreaView>
+    <Stack.Navigator headerMode={'none'}>
+      {user ? (
+        <Stack.Screen name="MainNavigator" component={MainNavigator} />
+      ) : (
+        <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
+      )}
+    </Stack.Navigator>
   );
 };
 

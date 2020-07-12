@@ -42,19 +42,79 @@ export type CreateNavigationParamList = {
   Words: {
     entity: IEntity;
   };
-  Phrases: undefined;
-  Sentences: undefined;
+  Phrases: {
+    entity: IEntity;
+  };
+  Sentences: {
+    entity: IEntity;
+  };
 };
 
-export type WordsScreenProps = MaterialBottomTabScreenProps<
+export type WordsNavigationProps = MaterialBottomTabScreenProps<
   CreateNavigationParamList,
   'Words'
 >;
-export type PhrasesScreenProps = MaterialBottomTabScreenProps<
+export type PhrasesNavigationProps = MaterialBottomTabScreenProps<
   CreateNavigationParamList,
   'Phrases'
 >;
-export type SentencesScreenProps = MaterialBottomTabScreenProps<
+export type SentencesNavigationProps = MaterialBottomTabScreenProps<
   CreateNavigationParamList,
   'Sentences'
+>;
+
+export type WordsNavigationParamList = {
+  WordsScreen: {
+    entity: IEntity;
+  };
+  WordsModal: {
+    setWords: any;
+    entity: string;
+    entityId: number;
+  };
+};
+
+export type WordsScreenProps = StackScreenProps<
+  WordsNavigationParamList,
+  'WordsScreen'
+>;
+export type WordsModalProps = StackScreenProps<
+  WordsNavigationParamList,
+  'WordsModal'
+>;
+
+export type PhrasesNavigationParamList = {
+  PhrasesScreen: {
+    entity: IEntity;
+  };
+  PhrasesModal: {
+    setPhrases: any;
+    entity: string;
+    entityId: number;
+  };
+};
+
+export type PhrasesScreenProps = StackScreenProps<
+  PhrasesNavigationParamList,
+  'PhrasesScreen'
+>;
+export type PhrasesModalProps = StackScreenProps<
+  PhrasesNavigationParamList,
+  'PhrasesModal'
+>;
+
+export type SentencesNavigationParamList = {
+  SentencesScreen: {
+    entity: IEntity;
+  };
+  SentencesModal: undefined;
+};
+
+export type SentencesScreenProps = StackScreenProps<
+  SentencesNavigationParamList,
+  'SentencesScreen'
+>;
+export type SentencesModalProps = StackScreenProps<
+  SentencesNavigationParamList,
+  'SentencesModal'
 >;

@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useTheme} from 'react-native-paper';
-import WordsScreen from '../screens/MainNavigation/CreateNavigation/Words.screen';
-import PhrasesScreen from '../screens/MainNavigation/CreateNavigation/Phrases.screen';
-import SentencesScreen from '../screens/MainNavigation/CreateNavigation/Sentences.screen';
+import SentencesScreen from '../screens/MainNavigation/CreateNavigation/SentencesNavigation/Sentences.screen';
 import {IEntity} from '../typings/IEntity';
 import StartScreen from '../screens/MainNavigation/CreateNavigation/Start.screen';
 import {CreateNavigationParamList} from '../typings/INavigationProps';
+import WordsNavigator from './Words.navigation';
+import PhrasesNavigator from './Phrases.navigation';
+import SentencesNavigator from './Sentences.navigation';
 
 const Tab = createMaterialBottomTabNavigator<CreateNavigationParamList>();
 
@@ -27,7 +28,7 @@ const CreateNavigation = () => {
       barStyle={{backgroundColor: colors.primary}}>
       <Tab.Screen
         name="Words"
-        component={WordsScreen}
+        component={WordsNavigator}
         initialParams={{
           entity,
         }}
@@ -44,7 +45,10 @@ const CreateNavigation = () => {
       />
       <Tab.Screen
         name="Phrases"
-        component={PhrasesScreen}
+        component={PhrasesNavigator}
+        initialParams={{
+          entity,
+        }}
         options={{
           tabBarLabel: 'Phrases',
           tabBarIcon: ({color}) => (
@@ -58,7 +62,10 @@ const CreateNavigation = () => {
       />
       <Tab.Screen
         name="Sentences"
-        component={SentencesScreen}
+        component={SentencesNavigator}
+        initialParams={{
+          entity,
+        }}
         options={{
           tabBarLabel: 'Sentences',
           tabBarIcon: ({color}) => (

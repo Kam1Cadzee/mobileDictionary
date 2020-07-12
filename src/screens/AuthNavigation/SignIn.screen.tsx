@@ -29,10 +29,10 @@ const SignInScreen = (props: SignInScreenProps) => {
   const theme = useTheme();
   const {colors} = theme;
   const {control, handleSubmit} = useForm<IFormData>({
-    defaultValues: {
+    /*  defaultValues: {
       email: 'test@gmail.com',
       password: '12345',
-    },
+    },*/
   });
   const [login] = useMutation(QUERIES.LOGIN, {
     update: async (proxy, mutationResult) => {
@@ -71,34 +71,34 @@ const SignInScreen = (props: SignInScreenProps) => {
           </View>
           <View>
             <Controller
-              as={
+              render={({onChange, onBlur, value}) => (
                 <TextInput
                   style={styles.input}
                   mode={'outlined'}
                   label="Email"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
                 />
-              }
+              )}
               control={control}
               name="email"
-              onChange={(args: any) => args[0].nativeEvent.text}
               rules={{required: true}}
-              style={styles.input}
-              defaultValue=""
             />
             <Controller
-              as={
+              render={({onChange, onBlur, value}) => (
                 <TextInput
                   style={styles.input}
                   mode={'outlined'}
                   label="Password"
+                  onBlur={onBlur}
+                  onChangeText={(value) => onChange(value)}
+                  value={value}
                 />
-              }
+              )}
               control={control}
               name="password"
-              onChange={(args: any) => args[0].nativeEvent.text}
               rules={{required: true}}
-              style={styles.input}
-              defaultValue=""
             />
           </View>
           <View>
