@@ -5,7 +5,8 @@ import {
   setCustomTextInput,
   setCustomText,
 } from 'react-native-global-props';
-import {Platform} from 'react-native';
+import {PixelRatio, Platform} from 'react-native';
+import {useScaleText} from 'react-native-text';
 
 type Theme = 'dark' | 'light';
 type TupleColor = {
@@ -116,6 +117,7 @@ const getToneColor = ({color, contrast = 4, helper, ratio}: IGetToneColor) => {
 };
 
 const ProviderTheme = ({children}: any) => {
+  const {fontSize} = useScaleText({fontSize: 14});
   const [theme, setTheme] = useState('light' as Theme);
   const value: IThemeContext = useMemo(() => {
     const backgroundColor = Color(
@@ -129,10 +131,12 @@ const ProviderTheme = ({children}: any) => {
     // Setting default styles for all Text components.
     const customTextProps = {
       style: {
-        fontSize: 16,
-        fontFamily: Platform.OS === 'ios' ? 'Futura' : 'Roboto',
+        fontSize,
+        fontFamily:
+          Platform.OS === 'ios' ? 'Apple SD Gothic Neo' : 'OpenSans-Light',
+
         color: textColor.toString(),
-        fontWeight: '100',
+        fontWeight: '300',
       },
     };
 
@@ -145,9 +149,11 @@ const ProviderTheme = ({children}: any) => {
     const customTextInputProps = {
       underlineColorAndroid: 'rgba(0,0,0,0)',
       style: {
-        fontSize: 16,
-        fontWeight: '100',
-        fontFamily: Platform.OS === 'ios' ? 'Futura' : 'Roboto',
+        fontSize,
+        fontWeight: '300',
+        fontFamily:
+          Platform.OS === 'ios' ? 'Apple SD Gothic Neo' : 'OpenSans-Light',
+
         backgroundColor: 'transparent',
         color: textColor.toString(),
       },

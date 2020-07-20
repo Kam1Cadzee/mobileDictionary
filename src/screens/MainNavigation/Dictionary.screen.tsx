@@ -6,9 +6,12 @@ import {useQuery} from '@apollo/react-hooks';
 import QUERIES from '../../graphql/queries';
 import {IEntity} from '../../typings/IEntity';
 import EntityItem from '../../components/screens/DictionaryScreen/EntityItem';
+import {useTheme} from '../../context/ThemeContext';
+import TestChangeTheme from '../../components/common/TestChangeTheme';
 
 const DictionaryScreen = () => {
   const perPage = 6;
+  const {backgroundColor, accentWithText} = useTheme();
   const [loadMore, setLoadMore] = useState(true);
   const [skip, setSkip] = useState(0);
   const {user} = useCurrentUser();
@@ -20,7 +23,6 @@ const DictionaryScreen = () => {
     },
     fetchPolicy: 'cache-and-network',
     onCompleted: (data1) => {
-      console.log(data1);
       if (data1.entities.length === 0) {
         setLoadMore(false);
         return;
@@ -66,8 +68,17 @@ const DictionaryScreen = () => {
     data: OBJ[key].items,
   }));
 
+  const bgColor = backgroundColor().toString();
+  const headerColors = accentWithText(0.3);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: bgColor,
+        },
+      ]}>
+      {/*<TestChangeTheme />*/}
       <SectionList
         sections={DATA}
         onScroll={handleEventScroll}
@@ -77,7 +88,16 @@ const DictionaryScreen = () => {
         }}
         renderItem={(props) => <EntityItem key={props.index} {...props} />}
         renderSectionHeader={({section: {title}}) => (
-          <Text style={styles.header}>{title}</Text>
+          <Text
+            style={{
+              backgroundColor: headerColors.backgroundColor.toString(),
+              color: headerColors.color.toString(),
+              paddingLeft: 16,
+              paddingVertical: 8,
+              textAlignVertical: 'center',
+            }}>
+            {title}
+          </Text>
         )}
       />
     </SafeAreaView>
@@ -87,18 +107,6 @@ const DictionaryScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-  },
-  header: {
-    fontSize: 22,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 24,
   },
 });
 

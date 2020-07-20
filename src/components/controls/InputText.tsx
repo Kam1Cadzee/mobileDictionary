@@ -1,25 +1,27 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {
-  NativeViewGestureHandlerProperties,
-  TextInput,
-} from 'react-native-gesture-handler';
+import {NativeViewGestureHandlerProperties} from 'react-native-gesture-handler';
 import {
   StyleSheet,
   TextInputProps,
   View,
-  Text,
+  TextInput,
   Animated,
   Keyboard,
 } from 'react-native';
 import Color from 'color';
 import {useTheme} from '../../context/ThemeContext';
+import useLayoutSize, {ISize} from '../../useHooks/useLayoutSize';
 
 type IInputTextProps = NativeViewGestureHandlerProperties &
   TextInputProps & {
     label?: string;
     backgroundColor?: Color;
     isBorder?: boolean;
+    size?: ISize;
+    styleLabel?: any;
+    styleInput?: any;
   };
+
 const InputText = ({
   label,
   value,
@@ -28,14 +30,20 @@ const InputText = ({
   keyboardType,
   onBlur,
   onFocus,
+  style,
+  styleInput,
+  styleLabel,
+  size = 'default',
   ...props
 }: IInputTextProps) => {
+  const layout = useLayoutSize(size);
+
+  const {theme} = useTheme();
   const {backgroundColor: bgColor, textColor} = useTheme();
   const isPassword = keyboardType === 'visible-password';
   backgroundColor = backgroundColor ? backgroundColor : bgColor();
   const [isFocus, setIsFocus] = useState(false);
-  const labelTop = useRef(new Animated.Value(!!value || isFocus ? 8 : 24))
-    .current;
+  const labelTop = useRef(new Animated.Value(0)).current;
 
   const handleFocus = (e: any) => {
     setIsFocus(true);
@@ -49,9 +57,9 @@ const InputText = ({
 
   useEffect(() => {
     Animated.timing(labelTop, {
-      toValue: !!value || isFocus ? 8 : 24,
+      toValue: !!value || isFocus ? 0 : 1,
       duration: 200,
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   }, [value, isFocus, labelTop]);
 
@@ -65,6 +73,7 @@ const InputText = ({
             ? textColor(0.2).toString()
             : 'transparent',
         },
+        style,
       ]}>
       {label && (
         <Animated.Text
@@ -72,13 +81,21 @@ const InputText = ({
             {
               position: 'absolute',
               color: textColor(0.2, backgroundColor).toString(),
-              left: 16,
+              left: layout.paddingHorizontal,
+              fontSize: labelTop.interpolate({
+                inputRange: [0, 1],
+                outputRange: [layout.fontSizeLow, layout.fontSize],
+              }),
               transform: [
                 {
-                  translateY: labelTop,
+                  translateY: labelTop.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [layout.height / 10, layout.height / 3.5],
+                  }),
                 },
               ],
             },
+            styleLabel,
           ]}>
           {label}
         </Animated.Text>
@@ -87,9 +104,17 @@ const InputText = ({
         style={[
           styles.textInput,
           {
+            height: layout.height,
+            fontSize: layout.fontSize,
+            paddingHorizontal: layout.paddingHorizontal,
+
             color: textColor(0, backgroundColor).toString(),
           },
+          styleInput,
         ]}
+        allowFontScaling={false}
+        autoCapitalize={'none'}
+        keyboardAppearance={theme}
         selectionColor={textColor().toString()}
         onSubmitEditing={Keyboard.dismiss}
         secureTextEntry={isPassword}
@@ -108,8 +133,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textInput: {
-    padding: 16,
-    paddingTop: 32,
+    padding: 0,
+    paddingTop: 15,
   },
 });
 

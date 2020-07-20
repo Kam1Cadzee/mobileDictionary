@@ -7,6 +7,8 @@ import {name as appName} from './app.json';
 import {NavigationContainer} from '@react-navigation/native';
 import ProviderApollo from './src/components/common/ProviderApollo';
 import ProviderTheme from './src/context/ThemeContext';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import ProviderKeyboard from './src/context/KeyboardContext';
 
 const theme = {
   ...DefaultTheme,
@@ -21,13 +23,17 @@ const theme = {
 const Main = () => {
   return (
     <ProviderApollo>
-      <ProviderTheme>
-      <NavigationContainer>
-        <PaperProvider theme={theme}>
-          <App />
-        </PaperProvider>
-      </NavigationContainer>
-      </ProviderTheme>
+      <ProviderKeyboard>
+        <ProviderTheme>
+          <SafeAreaProvider>
+            <NavigationContainer>
+              <PaperProvider theme={theme}>
+                <App />
+              </PaperProvider>
+            </NavigationContainer>
+          </SafeAreaProvider>
+        </ProviderTheme>
+      </ProviderKeyboard>
     </ProviderApollo>
   );
 };

@@ -31,7 +31,7 @@ const App = () => {
     return <SplashScreen />;
   }
   return (
-    <Stack.Navigator headerMode={'none'}>
+    <Stack.Navigator headerMode={'none'} keyboardHandlingEnabled={true}>
       {user ? (
         <Stack.Screen name="MainNavigator" component={MainNavigator} />
       ) : (

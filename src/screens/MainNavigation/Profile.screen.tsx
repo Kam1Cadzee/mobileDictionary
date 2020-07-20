@@ -70,7 +70,11 @@ const ProfileScreen = (props: ProfileScreenProps) => {
   return (
     <ScrollView style={{flex: 1}}>
       <View
-        style={{flex: 1, margin: 50, backgroundColor: backgroundColor(value)}}>
+        style={{
+          flex: 1,
+          margin: 50,
+          backgroundColor: backgroundColor(value).toString(),
+        }}>
         <Menu.Item icon="logout" onPress={handleExit} title="Exit" />
         <Slider value={value} onValueChange={(value) => setValue(value)} />
         <Slider value={value2} onValueChange={(value) => setValue2(value)} />
@@ -80,7 +84,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             style={{
               flex: 1,
               height: 40,
-              borderBottomColor: textColor(i / 10),
+              borderBottomColor: textColor(i / 10).toString(),
               borderBottomWidth: 1,
             }}></View>
         ))}
@@ -89,13 +93,13 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             style={{
               flex: 1,
               height: 40,
-              borderBottomColor: backgroundColor(i / 10),
+              borderBottomColor: backgroundColor(i / 10).toString(),
               borderBottomWidth: 1,
             }}></View>
         ))}
 
         <Text>
-          {textcolor} {value2}
+          {textcolor.toString()} {value2}
         </Text>
         <View
           style={{
@@ -110,14 +114,14 @@ const ProfileScreen = (props: ProfileScreenProps) => {
             style={{
               width: 200,
               height: 50,
-              backgroundColor: colors.backgroundColor,
+              backgroundColor: colors.backgroundColor.toString(),
             }}>
             <Text
               style={{
                 fontSize: 22,
                 fontWeight: '900',
                 margin: 10,
-                color: colors.color,
+                color: colors.color.toString(),
               }}>
               {'hello'}
             </Text>
@@ -127,7 +131,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
               fontSize: 82,
               fontWeight: '900',
               margin: 10,
-              color: textcolor,
+              color: textcolor.toString(),
             }}>
             {'hello'}
           </Text>
@@ -143,7 +147,7 @@ const ProfileScreen = (props: ProfileScreenProps) => {
                       style={{
                         width: 40,
                         height: 40,
-                        backgroundColor: primaryTest(i, j),
+                        backgroundColor: primaryTest(i, j).toString(),
                       }}>
                       <Text>{i}</Text>
                     </View>

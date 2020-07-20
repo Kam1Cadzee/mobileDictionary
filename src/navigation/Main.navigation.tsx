@@ -13,7 +13,7 @@ const MainNavigator = () => {
       minSwipeDistance={20}
       edgeWidth={100}
       drawerType={'back'}
-      initialRouteName={'Profile'}>
+      initialRouteName={'Create'}>
       <Tab.Screen name="Create" component={CreateNavigation} />
       <Tab.Screen name="Dictionary" component={DictionaryScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

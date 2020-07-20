@@ -1,11 +1,14 @@
 import React from 'react';
+import {ContainedTouchableProperties} from 'react-native-gesture-handler';
 import {
-  ContainedTouchableProperties,
+  StyleSheet,
+  TouchableNativeFeedbackProps,
+  Text,
   TouchableOpacity,
-} from 'react-native-gesture-handler';
-import {StyleSheet, TouchableNativeFeedbackProps, Text} from 'react-native';
+} from 'react-native';
 import {useTheme} from '../../context/ThemeContext';
 import Color from 'color';
+import useLayoutSize, {ISize} from '../../useHooks/useLayoutSize';
 
 type IColor = 'primary' | 'accent' | 'secondary' | 'default';
 type IButtonProps = TouchableNativeFeedbackProps &
@@ -14,6 +17,8 @@ type IButtonProps = TouchableNativeFeedbackProps &
     backgroundColor?: Color | string;
     ration?: number;
     children: any;
+    icon?: any;
+    size?: ISize;
   };
 const Button = ({
   color = 'default',
@@ -21,6 +26,8 @@ const Button = ({
   children,
   backgroundColor,
   style,
+  size = 'default',
+  icon: Icon,
   ...props
 }: IButtonProps) => {
   const {
@@ -30,7 +37,7 @@ const Button = ({
     backgroundColorWithText,
     textColor,
   } = useTheme();
-  const Component: any = children !== 'string';
+  const layout = useLayoutSize(size);
   let colors: any = {};
   if (backgroundColor) {
     colors.backgroundColor = backgroundColor.toString();
@@ -59,17 +66,15 @@ const Button = ({
         styles.btn,
         {
           backgroundColor: colors.backgroundColor.toString(),
+          minHeight: layout.height,
         },
         style,
       ]}
       {...props}>
-      {typeof children === 'string' ? (
+      {children ? (
         <Text style={{color: colors.color.toString()}}>{children}</Text>
       ) : (
-        <Component
-          color={colors.color.toString()}
-          fill={colors.color.toString()}
-        />
+        <Icon color={colors.color.toString()} fill={colors.color.toString()} />
       )}
     </TouchableOpacity>
   );
@@ -77,8 +82,8 @@ const Button = ({
 
 const styles = StyleSheet.create({
   btn: {
-    padding: 24,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 export default Button;

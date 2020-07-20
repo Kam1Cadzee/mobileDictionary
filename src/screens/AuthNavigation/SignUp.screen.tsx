@@ -1,97 +1,207 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
+  Animated,
+  Dimensions,
+  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {
-  Button,
-  Paragraph,
-  TextInput,
-  Title,
-  useTheme,
-} from 'react-native-paper';
-import MainSvg from '../../components/Svg/MainSvg';
-import {SignUpScreenProps} from '../../typings/authTypings';
+import {SignUpScreenProps} from '../../typings/INavigationProps';
+import TestChangeTheme from '../../components/common/TestChangeTheme';
+import {useTheme} from '../../context/ThemeContext';
+import DismissKeyboard from '../../components/common/DismissKeyboard';
+import Logo from '../../components/common/Logo';
+import {Controller, useForm} from 'react-hook-form';
+import InputText from '../../components/controls/InputText';
+import Button from '../../components/controls/Button';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {useKeyboard} from '../../context/KeyboardContext';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+const {height, width} = Dimensions.get('window');
+interface IFormData {
+  name: string;
+  email: string;
+  password: string;
+  repeatPassword: string;
+}
 const SignUpScreen = (props: SignUpScreenProps) => {
-  const theme = useTheme();
-  const {colors} = theme;
+  const {control, handleSubmit} = useForm<IFormData>({
+    /*  defaultValues: {
+      email: 'test@gmail.com',
+      password: '12345',
+    },*/
+  });
+  const {bottom} = useSafeAreaInsets();
+  const {backgroundColor, accent, textColor} = useTheme();
+  const heightTop = useRef(new Animated.Value(150)).current;
+  const isShow = useKeyboard();
+
+  useEffect(() => {
+    Animated.timing(heightTop, {
+      toValue: isShow ? 0 : 150,
+      useNativeDriver: false,
+      duration: 100,
+    }).start();
+  }, [isShow]);
+
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.all}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.con}>
-          <View style={styles.top}>
-            <MainSvg fill={colors.primary} height={100} />
-          </View>
-          <View>
-            <TextInput style={styles.input} mode={'outlined'} label="Name" />
-            <TextInput style={styles.input} mode={'outlined'} label="Email" />
-            <TextInput
-              style={styles.input}
-              mode={'outlined'}
-              label="Password"
+    <View style={{flex: 1, backgroundColor: backgroundColor().toString()}}>
+      <DismissKeyboard>
+        <View
+          style={[
+            {
+              flex: 1,
+            },
+          ]}>
+          <TestChangeTheme />
+          <Animated.View
+            style={[
+              styles.top,
+              {
+                backgroundColor: accent(0.3).toString(),
+                height: heightTop,
+              },
+            ]}>
+            <Image
+              source={require('../../assets/images/main-img-1.jpg')}
+              style={[styles.img, {opacity: 0.5}]}
+              resizeMode={'cover'}
             />
-            <TextInput
-              style={styles.input}
-              mode={'outlined'}
-              label="Repeat password"
-            />
-          </View>
-          <View>
+            <Logo size={100} loading={false} />
+          </Animated.View>
+          <View style={[styles.con]}>
+            <KeyboardAwareScrollView>
+              <Controller
+                render={({onChange, onBlur, value}) => (
+                  <InputText
+                    label="Name"
+                    autoCompleteType={'name'}
+                    keyboardType={'default'}
+                    textContentType={'name'}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    size={'high'}
+                  />
+                )}
+                control={control}
+                name="name"
+                rules={{required: true}}
+              />
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: textColor(1).toString(),
+                }}
+              />
+              <Controller
+                render={({onChange, onBlur, value}) => (
+                  <InputText
+                    label="Email"
+                    autoCompleteType={'email'}
+                    keyboardType={'email-address'}
+                    textContentType={'emailAddress'}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    size={'high'}
+                  />
+                )}
+                control={control}
+                name="email"
+                rules={{required: true}}
+              />
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: textColor(1).toString(),
+                }}
+              />
+              <Controller
+                render={({onChange, onBlur, value}) => (
+                  <InputText
+                    label="Password"
+                    autoCompleteType={'password'}
+                    keyboardType={'visible-password'}
+                    textContentType={'password'}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    size={'high'}
+                  />
+                )}
+                control={control}
+                name="password"
+                rules={{required: true}}
+              />
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: textColor(1).toString(),
+                }}
+              />
+
+              <Controller
+                render={({onChange, onBlur, value}) => (
+                  <InputText
+                    label="Repeat password"
+                    autoCompleteType={'password'}
+                    keyboardType={'visible-password'}
+                    textContentType={'password'}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    size={'high'}
+                  />
+                )}
+                control={control}
+                name="repeatPassword"
+                rules={{required: true}}
+              />
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: textColor(1).toString(),
+                }}
+              />
+            </KeyboardAwareScrollView>
             <Button
-              style={{
-                backgroundColor: colors.primary,
-                marginBottom: 16,
-              }}
-              color={'white'}>
-              Sign up
-            </Button>
-            <Paragraph style={styles.alignCenter}>
-              You have an account
-              <Title
-                style={{color: colors.primary}}
-                onPress={() => props.navigation.push('SignIn')}>
-                {' '}
-                Sign in
-              </Title>
-            </Paragraph>
+              ration={0.4}
+              size={'high'}
+              color={'primary'}
+              icon={(props) => <Icon name="check" size={30} {...props} />}
+              style={[
+                styles.btn,
+                {
+                  paddingBottom: bottom / 2,
+                  paddingTop: bottom / 2,
+                },
+              ]}
+            />
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      </DismissKeyboard>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  all: {
-    flex: 1,
-  },
   con: {
-    flex: 1,
+    flexDirection: 'column',
     justifyContent: 'space-between',
-    padding: 24,
+    flex: 1,
   },
   top: {
-    paddingTop: 24,
-    display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '900',
-    paddingTop: 24,
-  },
-  alignCenter: {
-    textAlign: 'center',
-  },
-  input: {
-    marginBottom: 16,
+  btn: {},
+  img: {
+    ...StyleSheet.absoluteFillObject,
+    height: 150,
+    width,
   },
 });
 

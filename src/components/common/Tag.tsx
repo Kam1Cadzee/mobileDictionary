@@ -12,9 +12,16 @@ interface IPartOfSpeechProps {
   styleText?: any;
   styleView?: any;
   onPress?: any;
+  name?: 'en' | 'ru' | 'ua';
 }
 
-const Tag = ({style, type, onPress, styleText}: IPartOfSpeechProps) => {
+const Tag = ({
+  style,
+  type,
+  onPress,
+  styleText,
+  name = 'en',
+}: IPartOfSpeechProps) => {
   const colors = getPalletColorsForType(type);
   const findType: IPartOfSpeech | any = useFindPartOfSpeech(type);
 
@@ -30,7 +37,7 @@ const Tag = ({style, type, onPress, styleText}: IPartOfSpeechProps) => {
         style,
       ]}>
       <Text style={[{color: colors.dark}, styleText]}>
-        {findType.en ? findType.en : findType}
+        {findType[name] ? findType[name] : findType}
       </Text>
     </TouchableWithoutFeedback>
   );
