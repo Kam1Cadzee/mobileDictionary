@@ -1,20 +1,9 @@
 import React, {useRef, useState} from 'react';
 import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
-import {
-  Button,
-  DataTable,
-  FAB,
-  IconButton,
-  Modal,
-  Portal,
-  TextInput,
-} from 'react-native-paper';
-import Swipeable from 'react-native-swipeable';
-import {FlatList, RectButton} from 'react-native-gesture-handler';
 import SwipeableNative from 'react-native-gesture-handler/Swipeable';
 import {WordsScreenProps} from '../../../../typings/INavigationProps';
 import {ITranslate, IWord} from '../../../../typings/IEntity';
-import {getPalletColorsForType} from '../../../../utils/getPalleteColorsForType';
+import {usePalletColorsForType} from '../../../../utils/getPalleteColorsForType';
 import {PartOfSpeech} from '../../../../typings/PartOfSpeech';
 import ModalAddTranslate from '../../../../components/screens/WordsScreen/ModalAddTranslate';
 import Tag from '../../../../components/common/Tag';
@@ -22,22 +11,38 @@ import ModalChangeType from '../../../../components/screens/WordsScreen/ModalCha
 import {useMutation} from '@apollo/react-hooks';
 import {MUTATION} from '../../../../graphql/mutation';
 import {isEmptyObject} from '../../../../utils/isEmptyObject';
+import {useTheme} from '../../../../context/ThemeContext';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import InputText from '../../../../components/controls/InputText';
+import Color from 'color';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import ActionButton from 'react-native-action-button';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useNotification} from '../../../../context/NotificationContext';
+import {RectButton} from 'react-native-gesture-handler';
 
 interface ICache {
   [id: string]: IWord;
 }
 const {width} = Dimensions.get('window');
 const WordsScreen = ({route, navigation}: WordsScreenProps) => {
+  const {backgroundColor, textColor, primaryWithText} = useTheme();
   const [mutationUpdate, {loading: loadingUpdate}] = useMutation(
     MUTATION.updateWordsByEntity,
   );
-  const [isOpen, setIsOpen] = useState(false);
-  const [isSwiping, setIsSwiping] = useState(false);
+  const notif = useNotification();
   const [words, setWords] = useState(route.params.entity.words);
   const cache = useRef({} as ICache);
   const [deletedWords, setDeletedWords] = useState(
     route.params.entity.disconnectWords,
   );
+
+  const colors = {
+    backgroundColor: backgroundColor().toString(),
+    borderColor: textColor(0.7).toString(),
+    colorEn: textColor().toString(),
+    colorRu: textColor(0.2).toString(),
+  };
 
   const handleUpdateWord = () => {
     mutationUpdate({
@@ -59,6 +64,11 @@ const WordsScreen = ({route, navigation}: WordsScreenProps) => {
       },
     }).then(() => {
       cache.current = {};
+      notif({
+        type: 'success',
+        time: 5,
+        text: 'Entity of words has succeeded in saving!',
+      });
     });
   };
 
@@ -94,6 +104,11 @@ const WordsScreen = ({route, navigation}: WordsScreenProps) => {
       cache.current[idWord] = words[indexWord];
       return [...words];
     });
+    notif({
+      type: 'success',
+      time: 2,
+      text: 'Translation of word has been deleted',
+    });
   };
 
   const handleAddTranslate = (idWord: number, data: ITranslate) => {
@@ -103,11 +118,23 @@ const WordsScreen = ({route, navigation}: WordsScreenProps) => {
       words[findIndex].translate.push(data);
       setWords([...words]);
     }
+
+    notif({
+      type: 'success',
+      time: 2,
+      text: 'Translation of word has been added',
+    });
   };
 
   const handleDeleteWord = (id: number) => {
     setDeletedWords((words) => {
       return [...words, {id: id}];
+    });
+
+    notif({
+      type: 'success',
+      time: 2,
+      text: 'Word has been deleted',
     });
   };
   const filterWords = words.filter(
@@ -116,8 +143,9 @@ const WordsScreen = ({route, navigation}: WordsScreenProps) => {
 
   const actions = [
     {
-      icon: 'plus',
+      icon: 'ios-add',
       label: 'Add word',
+      size: 40,
       onPress: () =>
         navigation.push('WordsModal', {
           setWords,
@@ -128,37 +156,77 @@ const WordsScreen = ({route, navigation}: WordsScreenProps) => {
   ];
   if (!isEmptyObject(cache.current)) {
     actions.push({
-      icon: 'content-save',
+      icon: 'ios-save',
+      size: 50,
       label: 'Save',
       onPress: handleUpdateWord,
     });
   }
+  const colorsBtn = primaryWithText(0.2);
+
   return (
-    <View style={styles.con}>
-      <FlatList
-        scrollEnabled={!isSwiping}
-        data={filterWords}
-        renderItem={(info) => {
+    <View
+      style={[
+        styles.con,
+        {
+          backgroundColor: colors.backgroundColor,
+        },
+      ]}>
+      <KeyboardAwareScrollView
+        renderToHardwareTextureAndroid={true}
+        extraScrollHeight={-76}
+        viewIsInsideTabBar={false}>
+        {filterWords.map((word) => (
+          <WordItem
+            key={word.id}
+            word={word}
+            onDeleteWord={handleDeleteWord}
+            changeWord={changeWord}
+            changeTranslate={changeTranslate}
+            onDeleteTranslate={handleDeleteTranslate}
+            onAddTranslate={handleAddTranslate}
+            {...colors}
+          />
+        ))}
+      </KeyboardAwareScrollView>
+      <ActionButton
+        size={60}
+        buttonColor={colorsBtn.backgroundColor.toString()}
+        hideShadow={true}
+        renderIcon={(active) => (
+          <Ionicons
+            name="ios-add"
+            size={30}
+            color={colorsBtn.color.toString()}
+          />
+        )}
+        style={{
+          opacity: loadingUpdate ? 0.2 : 1,
+        }}>
+        {actions.map((a, index) => {
           return (
-            <WordItem
-              word={info.item}
-              onDeleteWord={handleDeleteWord}
-              changeWord={changeWord}
-              changeTranslate={changeTranslate}
-              onDeleteTranslate={handleDeleteTranslate}
-              onAddTranslate={handleAddTranslate}
-            />
+            <ActionButton.Item
+              textContainerStyle={{
+                borderColor: colors.borderColor.toString(),
+                backgroundColor: colorsBtn.backgroundColor.fade(0.7).toString(),
+              }}
+              textStyle={{
+                color: textColor().toString(),
+                borderColor: colors.borderColor.toString(),
+              }}
+              buttonColor={colorsBtn.backgroundColor.fade(0.2).toString()}
+              title={a.label}
+              onPress={a.onPress}
+              size={a.size}>
+              <Ionicons
+                size={20}
+                name={a.icon}
+                color={colorsBtn.color.toString()}
+              />
+            </ActionButton.Item>
           );
-        }}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      <FAB.Group
-        style={styles.btn}
-        open={isOpen}
-        icon={loadingUpdate ? 'loading' : 'plus'}
-        actions={actions}
-        onStateChange={({open}) => setIsOpen(open)}
-      />
+        })}
+      </ActionButton>
     </View>
   );
 };
@@ -170,6 +238,9 @@ interface IWordsItem {
   changeWord: (id: number, type: PartOfSpeech) => any;
   changeTranslate: (idWord: number, id: number, value: string) => any;
   onAddTranslate: (idWord: number, data: ITranslate) => any;
+  borderColor: string;
+  colorEn: string;
+  colorRu: string;
 }
 const WordItem = ({
   word,
@@ -178,21 +249,32 @@ const WordItem = ({
   changeTranslate,
   onDeleteTranslate,
   onAddTranslate,
+  borderColor,
+  colorEn,
+  colorRu,
 }: IWordsItem) => {
-  const colors = getPalletColorsForType(word.type);
+  const colors = usePalletColorsForType(word.type);
+  const {secondary} = useTheme();
   const [visible, setVisible] = React.useState(false);
   const [visible2, setVisible2] = React.useState(false);
 
   const renderRightActions = (progress, dragX) => {
-    const trans = dragX.interpolate({
-      inputRange: [-width, 0],
-      outputRange: ['#ef5350', '#fff'],
-    });
     return (
-      <Animated.View style={[styles.wordRightBtn, {backgroundColor: trans}]}>
-        <Text style={styles.textRightBtn}>To deleted?</Text>
-        <Text style={styles.textRightBtn}>Continue swiping to the left!</Text>
-      </Animated.View>
+      <RectButton
+        style={{backgroundColor: secondary(0.5).toString()}}
+        onPress={() => onDeleteWord(word.id)}>
+        <Animated.View
+          style={[
+            {
+              width: 80,
+              flex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}>
+          <Icon size={40} name={'trash'} color={'white'} />
+        </Animated.View>
+      </RectButton>
     );
   };
 
@@ -210,28 +292,37 @@ const WordItem = ({
   return (
     <SwipeableNative
       renderRightActions={renderRightActions}
-      useNativeAnimations={false}
-      onSwipeableRightOpen={() => onDeleteWord(word.id)}>
-      <View style={[styles.wordItem]}>
+      useNativeAnimations={false}>
+      <View
+        style={[
+          styles.wordItem,
+          {
+            backgroundColor: colors.light,
+            borderBottomColor: borderColor,
+          },
+        ]}>
         <View style={styles.viewTopWord}>
           <Tag type={word.type} onPress={() => setVisible2(true)} />
-          <Text style={[styles.textEn, {color: colors.dark}]}>{word.en}</Text>
-          <IconButton icon="plus" onPress={() => setVisible(true)}></IconButton>
-          <Portal>
-            <ModalAddTranslate
-              visible={visible}
-              onDismiss={() => setVisible(false)}
-              onSubmit={onAddTranslate}
-              wordId={word.id}
-            />
-            <ModalChangeType
-              visible={visible2}
-              onDismiss={() => setVisible2(false)}
-              wordId={word.id}
-              onSubmit={changeWord}
-              value={word.type}
-            />
-          </Portal>
+          <Text style={[styles.textEn, {color: colorEn}]}>{word.en}</Text>
+          <Icon
+            name="plus"
+            size={30}
+            color={colorEn}
+            onPress={() => setVisible(true)}
+          />
+          <ModalAddTranslate
+            visible={visible}
+            onDismiss={() => setVisible(false)}
+            onSubmit={onAddTranslate}
+            wordId={word.id}
+          />
+          <ModalChangeType
+            visible={visible2}
+            onDismiss={() => setVisible2(false)}
+            wordId={word.id}
+            onSubmit={changeWord}
+            value={word.type}
+          />
         </View>
         <View style={styles.conRu}>
           {filterTranslate.map((t, index) => {
@@ -239,10 +330,11 @@ const WordItem = ({
               <TranslateItem
                 key={t.id}
                 translate={t}
-                backgroundColor={index % 2 === 0 ? colors.medium : 'white'}
                 changeTranslate={onChangeTranslate}
                 onDeleteTranslate={handleDeleteTranslate}
                 canDelete={filterTranslate.length > 1}
+                color={colorRu}
+                backgroundColor={colors.light}
               />
             );
           })}
@@ -254,59 +346,77 @@ const WordItem = ({
 
 interface ITranslateItemProps {
   translate: ITranslate;
-  backgroundColor?: string | undefined;
   changeTranslate: (id: number, value: string) => any;
   onDeleteTranslate: (id: number) => any;
   canDelete: boolean;
+  color: string;
+  backgroundColor: string;
 }
 
 const TranslateItem = ({
-  backgroundColor,
   translate,
   changeTranslate,
   onDeleteTranslate,
   canDelete,
+  color,
+  backgroundColor,
 }: ITranslateItemProps) => {
-  const renderRightActions = (progress, dragX) => {
-    return (
-      <Animated.View style={[styles.btnRight]}>
-        <Button icon="delete" onPress={() => onDeleteTranslate(translate.id)} />
-      </Animated.View>
-    );
-  };
-  const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(translate.ru);
+  const left = useRef(new Animated.Value(0)).current;
 
   const handleBlur = () => {
-    setIsEdit(false);
     changeTranslate(translate.id, value);
   };
 
+  const handleDelete = (id: number) => {
+    Animated.timing(left, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start(() => {
+      onDeleteTranslate(id);
+    });
+  };
+
+  const height = left.interpolate({
+    inputRange: [0, 1],
+    outputRange: [40, 0],
+  });
+  const scaleY = left.interpolate({
+    inputRange: [0, 0.6],
+    outputRange: [1, 0],
+  });
+
   return (
-    <SwipeableNative
-      renderRightActions={canDelete ? renderRightActions : undefined}
-      rightThreshold={canDelete ? 50 : 0}
-      overshootRight={false}>
-      {isEdit ? (
-        <TextInput
-          style={[styles.textRuEdit, {borderColor: backgroundColor}]}
-          onBlur={handleBlur}
-          value={value}
-          onChangeText={(text) => setValue(text)}
+    <Animated.View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        //height: height,
+        opacity: scaleY,
+        transform: [
+          {
+            scaleY: scaleY,
+          },
+        ],
+      }}>
+      <InputText
+        backgroundColor={Color(backgroundColor)}
+        style={{flex: 1}}
+        size={'low'}
+        onBlur={handleBlur}
+        value={value}
+        onChangeText={(text) => setValue(text)}
+      />
+      {canDelete && (
+        <Icon
+          name="close"
+          size={30}
+          color={color}
+          onPress={() => handleDelete(translate.id)}
         />
-      ) : (
-        <Text
-          onPress={() => setIsEdit(true)}
-          style={[
-            styles.textRu,
-            {
-              backgroundColor,
-            },
-          ]}>
-          {value}
-        </Text>
       )}
-    </SwipeableNative>
+    </Animated.View>
   );
 };
 
@@ -356,9 +466,8 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   wordItem: {
-    backgroundColor: 'white',
-    margin: 8,
     marginBottom: 0,
+    borderBottomWidth: 0.5,
   },
   textEn: {
     fontSize: 18,

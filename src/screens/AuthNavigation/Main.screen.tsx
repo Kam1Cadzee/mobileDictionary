@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import {useTheme} from '../../context/ThemeContext';
 import InputText from '../../components/controls/InputText';
-import TestChangeTheme from '../../components/common/TestChangeTheme';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Button from '../../components/controls/Button';
 import {MainScreenProps} from '../../typings/INavigationProps';
@@ -39,7 +38,7 @@ const MainScreen = (props: MainScreenProps) => {
   const isShow = useKeyboard();
   const {control, handleSubmit} = useForm<IFormData>({
     defaultValues: {
-      email: 'test@gmail.com',
+      email: 'testMaks@gmail.com',
       password: '12345',
     },
   });
@@ -78,7 +77,6 @@ const MainScreen = (props: MainScreenProps) => {
             },
             styles.container,
           ]}>
-          <TestChangeTheme />
           <Image
             source={require('../../assets/images/main-img-1.jpg')}
             style={[styles.img]}
@@ -162,7 +160,7 @@ const MainScreen = (props: MainScreenProps) => {
               </Text>
             </View>
           </View>
-          <Text style={styles.version}>0.0.1-pre-alpha</Text>
+          <Text style={[styles.version, {top}]}>version 0.0.1</Text>
         </SafeAreaView>
       </DismissKeyboard>
     </KeyboardAvoidingView>
@@ -194,9 +192,8 @@ const styles = StyleSheet.create({
   },
   version: {
     position: 'absolute',
-    bottom: 0,
-    right: 0,
-    margin: 2,
+    top: 16,
+    right: 16,
   },
   img: {
     ...StyleSheet.absoluteFillObject,

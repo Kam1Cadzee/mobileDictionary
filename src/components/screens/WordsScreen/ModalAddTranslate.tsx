@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {Modal, Portal, TextInput} from 'react-native-paper';
 import {StyleSheet, Text, View} from 'react-native';
 import {ITranslate} from '../../../typings/IEntity';
 import CustomModal from '../../common/CustomModal';
 import {useMutation} from '@apollo/react-hooks';
 import {MUTATION} from '../../../graphql/mutation';
+import InputText from '../../controls/InputText';
 
 interface IModalAddTranslateProps {
   visible: boolean;
@@ -45,7 +45,8 @@ const ModalAddTranslate = ({
       loading={loading}
       onSubmit={handleSubmit}>
       <View style={styles.content}>
-        <TextInput
+        <InputText
+          size={'high'}
           label="Translate"
           value={text}
           onChangeText={(text) => setText(text)}

@@ -18,6 +18,8 @@ export interface IWord {
   type: PartOfSpeech;
   translate: ITranslate[];
   disconnectTranslate: IDeleteSmth[];
+  createdAt: string;
+  updatedAt: string;
 }
 export interface IIrrVerb {
   id: number;

@@ -10,7 +10,6 @@ import {
   View,
 } from 'react-native';
 import {SignUpScreenProps} from '../../typings/INavigationProps';
-import TestChangeTheme from '../../components/common/TestChangeTheme';
 import {useTheme} from '../../context/ThemeContext';
 import DismissKeyboard from '../../components/common/DismissKeyboard';
 import Logo from '../../components/common/Logo';
@@ -58,7 +57,6 @@ const SignUpScreen = (props: SignUpScreenProps) => {
               flex: 1,
             },
           ]}>
-          <TestChangeTheme />
           <Animated.View
             style={[
               styles.top,

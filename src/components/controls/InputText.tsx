@@ -20,6 +20,7 @@ type IInputTextProps = NativeViewGestureHandlerProperties &
     size?: ISize;
     styleLabel?: any;
     styleInput?: any;
+    afterIcon?: any;
   };
 
 const InputText = ({
@@ -34,6 +35,7 @@ const InputText = ({
   styleInput,
   styleLabel,
   size = 'default',
+  afterIcon: AfterIcon,
   ...props
 }: IInputTextProps) => {
   const layout = useLayoutSize(size);
@@ -90,7 +92,7 @@ const InputText = ({
                 {
                   translateY: labelTop.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [layout.height / 10, layout.height / 3.5],
+                    outputRange: [-10, 0],
                   }),
                 },
               ],
@@ -107,8 +109,8 @@ const InputText = ({
             height: layout.height,
             fontSize: layout.fontSize,
             paddingHorizontal: layout.paddingHorizontal,
-
             color: textColor(0, backgroundColor).toString(),
+            paddingTop: label ? 15 : 0,
           },
           styleInput,
         ]}
@@ -124,17 +126,26 @@ const InputText = ({
         onBlur={handleBlur}
         {...props}
       />
+      {AfterIcon && (
+        <AfterIcon
+          color={textColor(0, backgroundColor).toString()}
+          style={{marginRight: layout.paddingHorizontal}}
+          size={layout.sizeIcon}
+        />
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   con: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   textInput: {
     padding: 0,
-    paddingTop: 15,
+    flex: 1,
   },
 });
 

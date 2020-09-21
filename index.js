@@ -9,6 +9,14 @@ import ProviderApollo from './src/components/common/ProviderApollo';
 import ProviderTheme from './src/context/ThemeContext';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import ProviderKeyboard from './src/context/KeyboardContext';
+import { AppearanceProvider } from 'react-native-appearance';
+import ProviderNotification from './src/context/NotificationContext';
+import * as Sentry from '@sentry/react-native';
+
+/*Sentry.init({
+  dsn: 'https://3b99536ff2d040b5a14b8b0da69b01de@o345313.ingest.sentry.io/5373821',
+  attachStacktrace: true,
+});*/
 
 const theme = {
   ...DefaultTheme,
@@ -23,17 +31,21 @@ const theme = {
 const Main = () => {
   return (
     <ProviderApollo>
-      <ProviderKeyboard>
-        <ProviderTheme>
-          <SafeAreaProvider>
-            <NavigationContainer>
-              <PaperProvider theme={theme}>
-                <App />
-              </PaperProvider>
-            </NavigationContainer>
-          </SafeAreaProvider>
-        </ProviderTheme>
-      </ProviderKeyboard>
+      <ProviderTheme>
+      <ProviderNotification>
+        <ProviderKeyboard>
+          <AppearanceProvider>
+            <SafeAreaProvider>
+              <NavigationContainer>
+                <PaperProvider theme={theme}>
+                  <App />
+                </PaperProvider>
+              </NavigationContainer>
+            </SafeAreaProvider>
+          </AppearanceProvider>
+        </ProviderKeyboard>
+      </ProviderNotification>
+      </ProviderTheme>
     </ProviderApollo>
   );
 };

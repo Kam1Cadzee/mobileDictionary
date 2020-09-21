@@ -1,10 +1,9 @@
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {getPalletColorsForType} from '../../utils/getPalleteColorsForType';
+import {StyleSheet, View, Text, TouchableWithoutFeedback} from 'react-native';
+import {usePalletColorsForType} from '../../utils/getPalleteColorsForType';
 import {IPartOfSpeech, PartOfSpeech} from '../../typings/PartOfSpeech';
-import {Text} from 'react-native-paper';
 import {useFindPartOfSpeech} from '../../useHooks/usePartOfSpeech';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {useScaleText} from 'react-native-text';
 
 interface IPartOfSpeechProps {
   type: PartOfSpeech;
@@ -22,8 +21,9 @@ const Tag = ({
   styleText,
   name = 'en',
 }: IPartOfSpeechProps) => {
-  const colors = getPalletColorsForType(type);
+  const colors = usePalletColorsForType(type);
   const findType: IPartOfSpeech | any = useFindPartOfSpeech(type);
+  const {fontSize} = useScaleText({fontSize: 14});
 
   return (
     <TouchableWithoutFeedback
@@ -31,12 +31,12 @@ const Tag = ({
       style={[
         styles.type,
         {
-          backgroundColor: colors.light,
+          backgroundColor: 'transparent',
           borderColor: colors.medium,
         },
         style,
       ]}>
-      <Text style={[{color: colors.dark}, styleText]}>
+      <Text style={[{color: colors.dark, fontSize}, styleText]}>
         {findType[name] ? findType[name] : findType}
       </Text>
     </TouchableWithoutFeedback>
@@ -44,7 +44,7 @@ const Tag = ({
 };
 
 const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
-  const colors = getPalletColorsForType(type);
+  const colors = usePalletColorsForType(type);
   const findType: IPartOfSpeech | any = useFindPartOfSpeech(type);
 
   if (findType.en) {
@@ -54,7 +54,7 @@ const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
           style={[
             styles.type,
             {
-              backgroundColor: colors.light,
+              backgroundColor: 'transparent',
               borderColor: colors.medium,
             },
             style,
@@ -65,7 +65,7 @@ const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
           style={[
             styles.type,
             {
-              backgroundColor: colors.light,
+              backgroundColor: 'transparent',
               borderColor: colors.medium,
             },
             style,
@@ -76,7 +76,7 @@ const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
           style={[
             styles.type,
             {
-              backgroundColor: colors.light,
+              backgroundColor: 'transparent',
               borderColor: colors.medium,
             },
             style,
@@ -91,7 +91,7 @@ const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
         style={[
           styles.type,
           {
-            backgroundColor: colors.light,
+            backgroundColor: 'transparent',
             borderColor: colors.medium,
           },
           style,
@@ -104,10 +104,10 @@ const Tags = ({style, type, styleText, styleView}: IPartOfSpeechProps) => {
 
 const styles = StyleSheet.create({
   type: {
-    borderRadius: 3,
-    borderWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    borderWidth: 0.5,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    fontWeight: '100',
   },
   tags: {},
 });

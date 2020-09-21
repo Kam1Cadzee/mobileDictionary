@@ -41,12 +41,15 @@ export type ProfileScreenProps = DrawerScreenProps<
 export type CreateNavigationParamList = {
   Words: {
     entity: IEntity;
+    onBack: any;
   };
   Phrases: {
     entity: IEntity;
+    onBack: any;
   };
   Sentences: {
     entity: IEntity;
+    onBack: any;
   };
 };
 

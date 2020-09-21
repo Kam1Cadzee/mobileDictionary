@@ -27,7 +27,9 @@ const FRAGMENTS = {
       type,
       disconnectTranslate {
         id
-      }
+      },
+    createdAt,
+    updatedAt,
       translate(orderBy: {
       updatedAt: desc
     }) {

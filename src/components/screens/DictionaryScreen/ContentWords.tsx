@@ -1,19 +1,40 @@
 import {IWord} from '../../../typings/IEntity';
 import {SectionList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {Tags} from '../../common/Tag';
+import Tag, {Tags} from '../../common/Tag';
 import {FlatList} from 'react-native-gesture-handler';
+import {useTheme} from '../../../context/ThemeContext';
+import {useScaleText} from 'react-native-text';
+import {getStyleFont} from '../../../utils/getStyleFont';
 
 interface IContentWordsProps {
   words: IWord[];
 }
 const ContentWords = ({words}: IContentWordsProps) => {
+  const {backgroundColor, textColor} = useTheme();
+  const {fontSize: textSizeEn} = useScaleText({fontSize: 18});
+  const {fontSize: textSizeRu} = useScaleText({fontSize: 14});
+
+  const colorEn = textColor(0.1).toString();
+  const colorRu = textColor(0.3).toString();
+  const borderColor = textColor(0.6).toString();
+
   return (
     <View style={styles.con}>
       <FlatList
         data={words}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={(info) => <ContentWord word={info.item} />}
+        style={{backgroundColor: backgroundColor().fade(0.1).toString()}}
+        renderItem={(info) => (
+          <ContentWord
+            word={info.item}
+            colorEn={colorEn}
+            colorRu={colorRu}
+            textSizeEn={textSizeEn}
+            textSizeRu={textSizeRu}
+            borderColor={borderColor}
+          />
+        )}
       />
     </View>
   );
@@ -21,17 +42,55 @@ const ContentWords = ({words}: IContentWordsProps) => {
 
 interface IContentWordProps {
   word: IWord;
+  colorEn: string;
+  colorRu: string;
+  textSizeEn: any;
+  textSizeRu: any;
+  borderColor: string;
 }
-const ContentWord = ({word}: IContentWordProps) => {
+const ContentWord = ({
+  word,
+  colorEn,
+  colorRu,
+  textSizeEn,
+  textSizeRu,
+  borderColor,
+}: IContentWordProps) => {
   return (
-    <View style={styles.conWord}>
+    <View style={[styles.conWord, {borderBottomColor: borderColor}]}>
       <View style={styles.header}>
-        <Text style={styles.textEn}>{word.en}</Text>
-        <Tags style={styles.tag} type={word.type} styleView={styles.tags} />
+        <Text
+          style={[
+            styles.textEn,
+            {
+              color: colorEn,
+              fontSize: textSizeEn,
+            },
+          ]}>
+          {word.en.toLowerCase()}
+        </Text>
+        <Tag
+          style={styles.tag}
+          type={word.type}
+          styleText={{
+            textAlign: 'center',
+          }}
+        />
       </View>
       <View>
         {word.translate.map((t) => {
-          return <Text>{t.ru}</Text>;
+          return (
+            <Text
+              style={[
+                styles.textRu,
+                {
+                  color: colorRu,
+                  fontSize: textSizeRu,
+                },
+              ]}>
+              {t.ru.toLowerCase()}
+            </Text>
+          );
         })}
       </View>
     </View>
@@ -41,42 +100,26 @@ const ContentWord = ({word}: IContentWordProps) => {
 const styles = StyleSheet.create({
   con: {
     flex: 1,
-    backgroundColor: 'white',
   },
   conWord: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,
-
-    padding: 8,
-    margin: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     marginBottom: 0,
     flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 5,
+    borderBottomWidth: 0.5,
   },
   textEn: {
-    fontSize: 22,
     flex: 1,
-    textAlign: 'center',
+    ...getStyleFont('400-Regular'),
   },
-  tags: {
-    flexDirection: 'row',
-    flex: 1,
-  },
+  textRu: {},
   tag: {
-    margin: 2,
     padding: 0,
+    flex: 1,
+    width: 100,
   },
   header: {
-    flexDirection: 'column',
-    flex: 1,
+    flexDirection: 'row',
   },
 });
 export default ContentWords;

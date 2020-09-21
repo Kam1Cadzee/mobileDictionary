@@ -6,10 +6,10 @@ import {useCurrentUser} from './src/useHooks/useCurrentUser';
 import {useMutation} from '@apollo/react-hooks';
 import QUERIES from './src/graphql/queries';
 import SplashScreen from './src/screens/Splash.screen';
-import {SafeAreaView} from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
+
 const App = () => {
   const {user} = useCurrentUser();
   const [refresh, {loading}] = useMutation(QUERIES.REFRESH_USER, {

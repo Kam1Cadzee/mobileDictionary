@@ -1,14 +1,16 @@
-import React, {useContext, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import Color from 'color';
 import {
   setCustomView,
   setCustomTextInput,
   setCustomText,
 } from 'react-native-global-props';
-import {PixelRatio, Platform} from 'react-native';
+import {Platform} from 'react-native';
 import {useScaleText} from 'react-native-text';
+import {useColorScheme} from 'react-native-appearance';
+import AsyncStorage from '@react-native-community/async-storage';
 
-type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light';
 type TupleColor = {
   backgroundColor: Color;
   color: Color;
@@ -117,8 +119,17 @@ const getToneColor = ({color, contrast = 4, helper, ratio}: IGetToneColor) => {
 };
 
 const ProviderTheme = ({children}: any) => {
+  const colorScheme: any = useColorScheme();
   const {fontSize} = useScaleText({fontSize: 14});
-  const [theme, setTheme] = useState('light' as Theme);
+  const [theme, setTheme] = useState(colorScheme);
+  useEffect(() => {
+    AsyncStorage.getItem('theme').then((t) => {
+      if (t) {
+        setTheme(t);
+      }
+    });
+  }, []);
+
   const value: IThemeContext = useMemo(() => {
     const backgroundColor = Color(
       theme === 'light' ? '#f8f6f9ff' : '#1d1d26ff',
@@ -136,7 +147,7 @@ const ProviderTheme = ({children}: any) => {
           Platform.OS === 'ios' ? 'Apple SD Gothic Neo' : 'OpenSans-Light',
 
         color: textColor.toString(),
-        fontWeight: '300',
+        fontWeight: '100',
       },
     };
 
@@ -150,7 +161,7 @@ const ProviderTheme = ({children}: any) => {
       underlineColorAndroid: 'rgba(0,0,0,0)',
       style: {
         fontSize,
-        fontWeight: '300',
+        fontWeight: '100',
         fontFamily:
           Platform.OS === 'ios' ? 'Apple SD Gothic Neo' : 'OpenSans-Light',
 
@@ -162,7 +173,10 @@ const ProviderTheme = ({children}: any) => {
     setCustomTextInput(customTextInputProps);
     setCustomText(customTextProps);
     return {
-      onChangeTheme: setTheme,
+      onChangeTheme: (theme: Theme) => {
+        setTheme(theme);
+        AsyncStorage.setItem('theme', theme);
+      },
       theme,
       primaryTest: (i, helperColor: any) => {
         if (!i) return primary;

@@ -5,10 +5,12 @@ import {IPhrase} from '../../../../typings/IEntity';
 import {useMutation} from '@apollo/react-hooks';
 import {MUTATION} from '../../../../graphql/mutation';
 import SwipeableNative from 'react-native-gesture-handler/Swipeable';
-import {FAB, TextInput} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ActionButton from 'react-native-action-button';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {isEmptyObject} from '../../../../utils/isEmptyObject';
-import {FlatList} from 'react-native-gesture-handler';
+import {useTheme} from '../../../../context/ThemeContext';
+import InputText from '../../../../components/controls/InputText';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const {width} = Dimensions.get('window');
 
@@ -18,6 +20,7 @@ interface ICache {
 
 const PhrasesScreen = ({route, navigation}: PhrasesScreenProps) => {
   const entity = route.params.entity;
+  const {backgroundColor, textColor, primaryWithText} = useTheme();
   const cache = useRef({} as ICache);
   const [mutationUpdate, {loading}] = useMutation(
     MUTATION.updatePhraseByEntity,
@@ -27,6 +30,11 @@ const PhrasesScreen = ({route, navigation}: PhrasesScreenProps) => {
   const [deletedPhrases, setDeletedPhrases] = useState(
     entity.disconnectPhrases,
   );
+
+  const colors = {
+    backgroundColor: backgroundColor().toString(),
+    borderColor: textColor(0.7).toString(),
+  };
 
   const handleDeletedPhrase = (id: number) => {
     setDeletedPhrases((phrases) => {
@@ -43,13 +51,27 @@ const PhrasesScreen = ({route, navigation}: PhrasesScreenProps) => {
   };
 
   const handleSubmit = () => {
-    console.log(cache.current);
-    console.log(deletedPhrases);
+    mutationUpdate({
+      variables: {
+        data: {
+          entityId: entity.id,
+          disconnectPhrases: deletedPhrases.map((d) => d.id),
+          phrases: Object.values(cache.current).map((p) => ({
+            id: p.id,
+            ru: p.ru,
+            phrase: p.phrase,
+          })),
+        },
+      },
+    }).then(() => {
+      cache.current = {};
+    });
   };
   const actions = [
     {
-      icon: 'plus',
+      icon: 'ios-add',
       label: 'Add phrase',
+      size: 40,
       onPress: () =>
         navigation.push('PhrasesModal', {
           setPhrases,
@@ -60,37 +82,79 @@ const PhrasesScreen = ({route, navigation}: PhrasesScreenProps) => {
   ];
   if (!isEmptyObject(cache.current)) {
     actions.push({
-      icon: 'content-save',
+      icon: 'ios-save',
+      size: 50,
       label: 'Save',
       onPress: handleSubmit,
     });
   }
+
+  const colorsBtn = primaryWithText(0.2);
+
   const filterPhrases = phrases.filter(
     (p) => !deletedPhrases.some((d) => d.id === p.id),
   );
   return (
-    <View style={styles.con}>
-      <FlatList
-        data={filterPhrases}
-        renderItem={(info) => {
+    <View
+      style={[
+        styles.con,
+        {
+          backgroundColor: colors.backgroundColor.toString(),
+        },
+      ]}>
+      <KeyboardAwareScrollView
+        renderToHardwareTextureAndroid={true}
+        extraScrollHeight={-76}
+        viewIsInsideTabBar={false}>
+        {filterPhrases.map((p) => {
           return (
             <PhraseBlock
-              phrase={info.item}
-              key={info.item.id}
+              phrase={p}
+              key={p.id}
               onChangePhrase={handleChangePhrase}
               onDeletePhrase={handleDeletedPhrase}
             />
           );
-        }}
-        keyExtractor={(item) => item.id.toString()}
-      />
-      <FAB.Group
-        style={styles.btn}
-        open={isOpen}
-        icon={loading ? 'loading' : 'plus'}
-        actions={actions}
-        onStateChange={({open}) => setIsOpen(open)}
-      />
+        })}
+      </KeyboardAwareScrollView>
+      <ActionButton
+        size={60}
+        buttonColor={colorsBtn.backgroundColor.toString()}
+        hideShadow={true}
+        renderIcon={(active) => (
+          <Ionicons
+            name="ios-add"
+            size={30}
+            color={colorsBtn.color.toString()}
+          />
+        )}
+        style={{
+          opacity: loading ? 0.2 : 1,
+        }}>
+        {actions.map((a, index) => {
+          return (
+            <ActionButton.Item
+              textContainerStyle={{
+                borderColor: colors.borderColor.toString(),
+                backgroundColor: colorsBtn.backgroundColor.fade(0.7).toString(),
+              }}
+              textStyle={{
+                color: textColor().toString(),
+                borderColor: colors.borderColor.toString(),
+              }}
+              buttonColor={colorsBtn.backgroundColor.fade(0.2).toString()}
+              title={a.label}
+              onPress={a.onPress}
+              size={a.size}>
+              <Ionicons
+                size={20}
+                name={a.icon}
+                color={colorsBtn.color.toString()}
+              />
+            </ActionButton.Item>
+          );
+        })}
+      </ActionButton>
     </View>
   );
 };
@@ -105,6 +169,7 @@ const PhraseBlock = ({
   onDeletePhrase,
   phrase,
 }: IPhraseBlockProps) => {
+  const {textColor, accent} = useTheme();
   const [en, setEn] = useState(phrase.phrase);
   const [ru, setRU] = useState(phrase.ru);
   const renderRightActions = (progress, dragX) => {
@@ -128,18 +193,28 @@ const PhraseBlock = ({
     });
   };
 
+  const borderColor = textColor(0.7).toString();
   return (
     <SwipeableNative
       renderRightActions={renderRightActions}
       useNativeAnimations={false}
       onSwipeableRightOpen={() => onDeletePhrase(phrase.id)}>
-      <View style={styles.phraseItem}>
-        <TextInput
+      <View
+        style={[
+          styles.phraseItem,
+          {
+            borderBottomColor: borderColor,
+          },
+        ]}>
+        <InputText
+          size="high"
           value={en}
+          backgroundColor={accent(0.5).fade(0.8)}
           onChangeText={(text) => setEn(text)}
           onBlur={handleChangePhrase}
         />
-        <TextInput
+        <InputText
+          size="high"
           value={ru}
           onChangeText={(text) => setRU(text)}
           onBlur={handleChangePhrase}
@@ -171,10 +246,9 @@ const styles = StyleSheet.create({
   },
   phraseItem: {
     flex: 1,
-    backgroundColor: 'white',
-    margin: 8,
     flexDirection: 'column',
     justifyContent: 'center',
+    borderBottomWidth: 1,
   },
 });
 export default PhrasesScreen;

@@ -1,6 +1,19 @@
 import {PartOfSpeech} from '../typings/PartOfSpeech';
+import {useTheme} from '../context/ThemeContext';
+import Color from 'color';
 
-export const getPalletColorsForType = (type: PartOfSpeech) => {
+export const usePalletColorsForType = (type: PartOfSpeech) => {
+  const {theme, backgroundColor} = useTheme();
+  const colors = getColors(type);
+  if (theme === 'dark') {
+    colors.light = backgroundColor().toString();
+    colors.medium = Color(colors.medium).mix(Color('black'), 0.1).toString();
+    colors.dark = Color(colors.dark).mix(Color('black'), 0.1).toString();
+  }
+  return colors;
+};
+
+const getColors = (type: PartOfSpeech) => {
   switch (type) {
     case PartOfSpeech.MODAL:
       return {
@@ -34,9 +47,9 @@ export const getPalletColorsForType = (type: PartOfSpeech) => {
       };
     case PartOfSpeech.OTHER:
       return {
-        light: '#fafafa',
-        medium: '#d9d9d9',
-        dark: '#6E6E6E',
+        light: '#efebe9',
+        medium: '#8d6e63',
+        dark: '#5d4037',
       };
     case PartOfSpeech.ADV:
       return {
@@ -58,9 +71,9 @@ export const getPalletColorsForType = (type: PartOfSpeech) => {
       };
     case PartOfSpeech.DET:
       return {
-        light: '#fafafa',
-        medium: '#d9d9d9',
-        dark: '#6E6E6E',
+        light: '#e0f2f1',
+        medium: '#26a69a',
+        dark: '#00695c',
       };
   }
 };

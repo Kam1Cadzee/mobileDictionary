@@ -1,6 +1,9 @@
 import React from 'react';
-import {Button, Modal, Portal, Title} from 'react-native-paper';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
+import Modal from 'react-native-modal';
+import Button from '../controls/Button';
+import {useTheme} from '../../context/ThemeContext';
+import {getStyleFont} from '../../utils/getStyleFont';
 
 interface ICustomModalProps {
   visible: boolean;
@@ -23,17 +26,39 @@ const CustomModal = React.memo(
     title,
     loading = false,
   }: ICustomModalProps) => {
+    const {backgroundColorWithText} = useTheme();
+    const colors = backgroundColorWithText();
     return (
-      <Modal visible={visible} onDismiss={onDismiss}>
-        <View style={styles.con}>
+      <Modal isVisible={visible} onDismiss={onDismiss}>
+        <View
+          style={[
+            styles.con,
+            {
+              backgroundColor: colors.backgroundColor.toString(),
+            },
+          ]}>
           <View style={styles.header}>
-            <Title>{title}</Title>
+            <Text style={[styles.title, {color: colors.color}]}>{title}</Text>
           </View>
           <View style={styles.content}>{children}</View>
           <View style={styles.footer}>
-            {textCancel && <Button onPress={onDismiss}>{textCancel}</Button>}
+            {textCancel && (
+              <Button
+                color={'primary'}
+                ration={0.22}
+                style={styles.btn}
+                size={'low'}
+                onPress={onDismiss}>
+                {textCancel}
+              </Button>
+            )}
             {textOK && (
-              <Button mode="contained" onPress={onSubmit} loading={loading}>
+              <Button
+                color={'primary'}
+                ration={0.22}
+                onPress={onSubmit}
+                style={styles.btn}
+                size={'low'}>
                 {textOK}
               </Button>
             )}
@@ -46,17 +71,13 @@ const CustomModal = React.memo(
 
 const styles = StyleSheet.create({
   con: {
-    backgroundColor: 'white',
     margin: 16,
-    padding: 16,
+    paddingVertical: 16,
     justifyContent: 'space-between',
-    borderRadius: 5,
     flexDirection: 'column',
   },
   header: {
-    marginHorizontal: -16,
     paddingHorizontal: 16,
-    backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -67,6 +88,9 @@ const styles = StyleSheet.create({
 
     elevation: 1,
   },
+  title: {
+    ...getStyleFont('600-SemiBold'),
+  },
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -74,6 +98,10 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingVertical: 16,
+  },
+  btn: {
+    paddingHorizontal: 32,
+    marginHorizontal: 8,
   },
 });
 

@@ -33,6 +33,7 @@ const useLayoutSize = (size: ISize) => {
         height: scaleText3.fontSize,
         fontSize: scaleText1.fontSize,
         fontSizeLow: scaleText2.fontSize,
+        sizeIcon: 30,
       };
     case 'medium':
     case 'default':
@@ -41,6 +42,7 @@ const useLayoutSize = (size: ISize) => {
         height: scaleText3.fontSize,
         fontSize: scaleText1.fontSize,
         fontSizeLow: scaleText2.fontSize,
+        sizeIcon: 25,
       };
     case 'low':
       return {
@@ -48,6 +50,7 @@ const useLayoutSize = (size: ISize) => {
         height: scaleText3.fontSize,
         fontSize: scaleText1.fontSize,
         fontSizeLow: scaleText2.fontSize,
+        sizeIcon: 20,
       };
   }
 };

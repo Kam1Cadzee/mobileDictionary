@@ -3,8 +3,8 @@ import {StyleSheet, Text, View} from 'react-native';
 import CustomModal from '../../common/CustomModal';
 import {PartOfSpeech} from '../../../typings/PartOfSpeech';
 import {usePartOfSpeech} from '../../../useHooks/usePartOfSpeech';
-import {TouchableNativeFeedback} from 'react-native-gesture-handler';
 import Tag from '../../common/Tag';
+import {useTheme} from '../../../context/ThemeContext';
 
 interface IModalAddTranslateProps {
   visible: boolean;
@@ -20,12 +20,15 @@ const ModalChangeType = ({
   wordId,
   value,
 }: IModalAddTranslateProps) => {
+  const {textColor} = useTheme();
   const types = usePartOfSpeech();
   const [type, setType] = useState(value);
   const handleSubmit = async () => {
     onSubmit(wordId, type);
     onDismiss();
   };
+
+  const color = textColor(0.5).toString();
   return (
     <CustomModal
       visible={visible}
@@ -39,8 +42,15 @@ const ModalChangeType = ({
           return (
             <Tag
               type={t.type}
-              style={t.type === type ? styles.typeActive : styles.type}
-              styleText={styles.typeText}
+              style={
+                t.type === type
+                  ? styles.typeActive
+                  : [styles.type, {borderColor: color}]
+              }
+              styleText={[
+                styles.typeText,
+                t.type === type ? {} : {color: color},
+              ]}
               onPress={() => setType(t.type)}
             />
           );
@@ -54,20 +64,11 @@ const styles = StyleSheet.create({
   content: {},
   type: {
     borderRadius: 0,
-    margin: 4,
+    marginBottom: 8,
   },
   typeActive: {
     borderRadius: 0,
-    margin: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 4,
+    marginBottom: 8,
   },
   typeText: {
     fontSize: 18,

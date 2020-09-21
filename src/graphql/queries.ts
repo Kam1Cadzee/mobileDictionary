@@ -29,6 +29,11 @@ const QUERIES = {
           }
       }
   `,
+  CURRENT_ERROR: gql`
+    {
+      notification @client
+    }
+  `,
   GET_STEP_CLIENT: gql`
     {
       step @client

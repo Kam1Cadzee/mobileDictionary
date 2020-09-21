@@ -6,7 +6,6 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTheme} from '../../../context/ThemeContext';
 import InputText from '../../../components/controls/InputText';
 import DismissKeyboard from '../../../components/common/DismissKeyboard';
-import TestChangeTheme from '../../../components/common/TestChangeTheme';
 import ActionButton from 'react-native-action-button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -19,7 +18,7 @@ const StartScreen = ({setEntity}: IStartScreenProps) => {
     MUTATION.GET_ENTITIES_BY_WORD,
   );
   const {top} = useSafeAreaInsets();
-  const {backgroundColor, secondaryWithText, primaryWithText} = useTheme();
+  const {backgroundColor, accentWithText, primaryWithText} = useTheme();
 
   const handleSubmit = async () => {
     if (loading) {
@@ -35,7 +34,7 @@ const StartScreen = ({setEntity}: IStartScreenProps) => {
     }
   };
 
-  const colors = secondaryWithText(0.4);
+  const colors = accentWithText(0.4);
   const colorsBtn = primaryWithText(0.2);
   return (
     <KeyboardAvoidingView
@@ -53,7 +52,6 @@ const StartScreen = ({setEntity}: IStartScreenProps) => {
               backgroundColor: backgroundColor().toString(),
             },
           ]}>
-          <TestChangeTheme />
           <InputText
             placeholder={'Search by word'}
             placeholderTextColor={colors.color.fade(0.4).toString()}

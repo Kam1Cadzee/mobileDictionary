@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import {ApolloLink, from} from '@apollo/client';
+import {from} from '@apollo/client';
 import {ApolloProvider} from '@apollo/react-hooks';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import {HttpLink} from 'apollo-link-http';
@@ -9,10 +9,34 @@ import {ApolloClient, gql} from 'apollo-boost';
 import {setContext} from '@apollo/link-context';
 import AsyncStorage from '@react-native-community/async-storage';
 import {isDevelopment} from '../../utils/env';
+import QUERIES from '../../graphql/queries';
+import * as Sentry from '@sentry/react-native';
 
 const linkError = onError(
   ({graphQLErrors = [], networkError, operation, forward, response}) => {
-    console.log({graphQLErrors, networkError, operation, forward, response});
+    try {
+      Sentry.captureException({
+        graphQLErrors: JSON.stringify(graphQLErrors),
+        operation: JSON.stringify(operation),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      client.writeQuery({
+        query: QUERIES.CURRENT_ERROR,
+        data: {
+          notification: {
+            text: graphQLErrors[0].message,
+            time: 3,
+            type: 'error',
+          },
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
     if (isDevelopment) {
     } else {
     }

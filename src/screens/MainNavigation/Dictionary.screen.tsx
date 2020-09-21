@@ -1,18 +1,66 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {SectionList, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useCurrentUser} from '../../useHooks/useCurrentUser';
 import {useQuery} from '@apollo/react-hooks';
 import QUERIES from '../../graphql/queries';
-import {IEntity} from '../../typings/IEntity';
+import {IEntity, IWord} from '../../typings/IEntity';
 import EntityItem from '../../components/screens/DictionaryScreen/EntityItem';
 import {useTheme} from '../../context/ThemeContext';
-import TestChangeTheme from '../../components/common/TestChangeTheme';
+import Icon from 'react-native-vector-icons/Ionicons';
 
+type Showing = 'entity' | 'words';
+
+const getConvertData = (entities: IEntity[], type: Showing) => {
+  if (type === 'entity') {
+    const OBJ = entities.reduce((previousValue, currentValue) => {
+      const key = new Date(currentValue.updatedAt).toLocaleDateString();
+      if (previousValue[key]) {
+        previousValue[key].items.push(currentValue);
+      } else {
+        previousValue[key] = {
+          items: [currentValue],
+        };
+      }
+      return previousValue;
+    }, {});
+    const DATA = Object.keys(OBJ).map((key) => ({
+      title: key,
+      data: OBJ[key].items,
+    }));
+    return DATA;
+  } else {
+    const words: IWord[] = entities
+      .map((e) => {
+        return e.words.filter(
+          (w) => !e.disconnectWords.some((d) => d.id === w.id),
+        );
+      })
+      .flat();
+
+    const OBJ = words.reduce((previousValue, currentValue) => {
+      const key = new Date(currentValue.updatedAt).toLocaleDateString();
+      if (previousValue[key]) {
+        previousValue[key].items.push(currentValue);
+      } else {
+        previousValue[key] = {
+          items: [currentValue],
+        };
+      }
+      return previousValue;
+    }, {});
+    const DATA = Object.keys(OBJ).map((key) => ({
+      title: key,
+      data: OBJ[key].items,
+    }));
+    return DATA;
+  }
+};
 const DictionaryScreen = () => {
   const perPage = 6;
-  const {backgroundColor, accentWithText} = useTheme();
+  const {backgroundColor, accentWithText, textColor, secondary} = useTheme();
   const [loadMore, setLoadMore] = useState(true);
+  const [type, setType] = useState('entity' as Showing);
   const [skip, setSkip] = useState(0);
   const {user} = useCurrentUser();
   const {loading} = useQuery(QUERIES.GET_ENTITIES, {
@@ -51,22 +99,7 @@ const DictionaryScreen = () => {
     }
   };
 
-  //const entities: IEntity[] = data ? data.entities : [];
-  const OBJ = entities.reduce((previousValue, currentValue) => {
-    const key = new Date(currentValue.updatedAt).toLocaleDateString();
-    if (previousValue[key]) {
-      previousValue[key].items.push(currentValue);
-    } else {
-      previousValue[key] = {
-        items: [currentValue],
-      };
-    }
-    return previousValue;
-  }, {});
-  const DATA = Object.keys(OBJ).map((key) => ({
-    title: key,
-    data: OBJ[key].items,
-  }));
+  const DATA = getConvertData(entities, type);
 
   const bgColor = backgroundColor().toString();
   const headerColors = accentWithText(0.3);
@@ -78,7 +111,30 @@ const DictionaryScreen = () => {
           backgroundColor: bgColor,
         },
       ]}>
-      {/*<TestChangeTheme />*/}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          paddingRight: 16,
+        }}>
+        <Icon
+          size={40}
+          color={
+            type === 'words' ? secondary().toString() : textColor().toString()
+          }
+          name={'md-menu'}
+          style={{paddingRight: 16}}
+          onPress={() => setType('words')}
+        />
+        <Icon
+          size={40}
+          color={
+            type === 'entity' ? secondary().toString() : textColor().toString()
+          }
+          onPress={() => setType('entity')}
+          name={'ios-list'}
+        />
+      </View>
       <SectionList
         sections={DATA}
         onScroll={handleEventScroll}

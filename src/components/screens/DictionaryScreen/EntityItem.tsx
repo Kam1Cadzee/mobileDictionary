@@ -7,10 +7,7 @@ import Carousel from 'react-native-looped-carousel';
 import ContentWords from './ContentWords';
 import ContentPhrases from './ContentPhrases';
 import ContentSentences from './ContentSentences';
-import {
-  TouchableWithoutFeedback,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useTheme} from '../../../context/ThemeContext';
 import {useScaleText} from 'react-native-text';
@@ -31,8 +28,9 @@ const EntityItem = ({item}: IEntityItemProps) => {
   const {backgroundColor, textColor, accent} = useTheme();
   const {fontSize: fsEn} = useScaleText({fontSize: 18});
   const {fontSize: fsRu} = useScaleText({fontSize: 15});
-  const mainWord = item.words.find((w) => w.en === item.title)!;
-  const words = item.words.filter((w) => w.id !== mainWord.id);
+  const isWord = !item.words;
+  const mainWord = isWord ? item : item.words.find((w) => w.en === item.title)!;
+  const words = isWord ? [] : item.words.filter((w) => w.id !== mainWord.id);
 
   const borderColor = textColor(0.6);
   return (
@@ -40,7 +38,7 @@ const EntityItem = ({item}: IEntityItemProps) => {
       style={[
         styles.con,
         {
-          backgroundColor: backgroundColor(0.02).toString(),
+          backgroundColor: backgroundColor(0).toString(),
           borderBottomColor: borderColor.toString(),
         },
       ]}
@@ -92,41 +90,43 @@ const EntityItem = ({item}: IEntityItemProps) => {
           })}
         </View>
       </View>
-      <Modal
-        presentationStyle={'overFullScreen'}
-        onRequestClose={() => setIsFull(false)}
-        onDismiss={() => setIsFull(false)}
-        transparent={true}
-        animationType={'slide'}
-        visible={isFull}>
-        <SafeAreaView style={{flex: 1}}>
-          <Carousel
-            autoplay={false}
-            delay={1000}
-            style={{width, flex: 1}}
-            currentPage={1}
-            isLooped={false}
-            bullets
-            bulletStyle={{borderColor: 'black'}}
-            chosenBulletStyle={{backgroundColor: 'black'}}
-            bulletsContainerStyle={{
-              width: 90,
-              left: width / 2 - 55,
-              overflow: 'hidden',
-              paddingRight: 10,
-            }}
-            onAnimateNextPage={(page) => {
-              if (page === 0) {
-                setIsFull(false);
-              }
-            }}>
-            <View style={{flex: 1, backgroundColor: 'transparent'}} />
-            <ContentWords key={'words'} words={words} />
-            <ContentPhrases key={'phrases'} phrases={item.phrases} />
-            <ContentSentences key={'sentences'} sentences={item.sentences} />
-          </Carousel>
-        </SafeAreaView>
-      </Modal>
+      {!isWord && (
+        <Modal
+          presentationStyle={'overFullScreen'}
+          onRequestClose={() => setIsFull(false)}
+          onDismiss={() => setIsFull(false)}
+          transparent={true}
+          animationType={'slide'}
+          visible={isFull}>
+          <SafeAreaView style={{flex: 1}}>
+            <Carousel
+              autoplay={false}
+              delay={1000}
+              style={{width, flex: 1}}
+              currentPage={1}
+              isLooped={false}
+              bullets
+              bulletStyle={{borderColor: textColor().toString()}}
+              chosenBulletStyle={{backgroundColor: textColor().toString()}}
+              bulletsContainerStyle={{
+                width: 90,
+                left: width / 2 - 55,
+                overflow: 'hidden',
+                paddingRight: 10,
+              }}
+              onAnimateNextPage={(page) => {
+                if (page === 0) {
+                  setIsFull(false);
+                }
+              }}>
+              <View style={{flex: 1, backgroundColor: 'transparent'}} />
+              <ContentWords key={'words'} words={words} />
+              <ContentPhrases key={'phrases'} phrases={item.phrases} />
+              <ContentSentences key={'sentences'} sentences={item.sentences} />
+            </Carousel>
+          </SafeAreaView>
+        </Modal>
+      )}
     </TouchableWithoutFeedback>
   );
 };
@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
   con: {
     flexDirection: 'row',
     paddingVertical: 16,
-    borderBottomWidth: 1,
     paddingLeft: 32,
   },
   line: {
